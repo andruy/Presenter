@@ -4,9 +4,17 @@ function Apple() {
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
     const [linksArray, setLinksArray] = useState([])
+    const [isDisabled, setIsDisabled] = useState(true)
 
     useEffect(() => {
         setButtonText(linksArray.length > 0 ? `Total links: ${linksArray.length}` : 'Empty')
+        if (linksArray.length === 0) {
+            const button = document.querySelector('.accordion-button:not(.collapsed)');
+            if (button) {
+                button.click();
+            }
+        }
+        setIsDisabled(linksArray.length > 0 ? false : true)
     }, [linksArray])
 
     const handleChange = event => {
@@ -38,7 +46,7 @@ function Apple() {
             <div className="accordion" id="accordionExample">
                 <div className="accordion-item">
                     <h2 className="accordion-header">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox" aria-expanded="false" aria-controls="collapseBox">
+                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox" aria-expanded="false" aria-controls="collapseBox" disabled={isDisabled}>
                             {buttonText}
                         </button>
                     </h2>
@@ -50,7 +58,7 @@ function Apple() {
                                         <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', flex: 1 }}>
                                             {link}
                                         </div>
-                                        <button onClick={() => setLinksArray(linksArray.filter((_, i) => i !== index))} className="btn btn-outline-secondary btn-sm">
+                                        <button onClick={() => setLinksArray(linksArray.filter((_, i) => i !== index))} className="btn btn-outline-danger btn-sm">
                                             <i className="fa-solid fa-trash"></i>
                                         </button>
                                     </li>
