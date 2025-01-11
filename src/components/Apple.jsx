@@ -1,17 +1,18 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 function Apple() {
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
     const [linksArray, setLinksArray] = useState([])
     const [isDisabled, setIsDisabled] = useState(true)
+    const buttonRef = useRef(null)
 
     useEffect(() => {
         setButtonText(linksArray.length > 0 ? `Total links: ${linksArray.length}` : 'Empty')
         if (linksArray.length === 0) {
-            const button = document.querySelector('.accordion-button:not(.collapsed)');
-            if (button) {
-                button.click();
+            const button = buttonRef.current
+            if (button && !button.classList.contains('collapsed')) {
+                button.click()
             }
         }
         setIsDisabled(linksArray.length > 0 ? false : true)
@@ -23,7 +24,6 @@ function Apple() {
 
     const handleAddLink = () => {
         if (inputValue.trim() !== '') {
-            // setLinksArray(prevLinksArray => [...prevLinksArray, inputValue])
             setLinksArray([...linksArray, inputValue])
             setInputValue('')
         }
@@ -46,7 +46,7 @@ function Apple() {
             <div className="accordion" id="accordionExample">
                 <div className="accordion-item">
                     <h2 className="accordion-header">
-                        <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox" aria-expanded="false" aria-controls="collapseBox" disabled={isDisabled}>
+                        <button ref={buttonRef} className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox" aria-expanded="false" aria-controls="collapseBox" disabled={isDisabled}>
                             {buttonText}
                         </button>
                     </h2>
