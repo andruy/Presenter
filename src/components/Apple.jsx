@@ -35,6 +35,33 @@ function Apple() {
         }
     }
 
+    // TODO: Send linksArray to the server
+
+    async function sendAppleList() {
+        const data = {
+            links: linksArray
+        }
+    
+        const response = await fetch('/yte', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        if (response.status === 200) {
+            const result = await response.json()
+            return result
+        } else {
+            console.log(response.status)
+            console.log(linksArray)
+            const result = {
+                report: "Something went wrong"
+            }
+            return result
+        }
+    }
+
     return (
         <div className="row g-2 align-items-center">
             <div className="col">
