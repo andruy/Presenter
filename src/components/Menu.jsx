@@ -1,7 +1,7 @@
-import ModalButton from './ModalButton';
-import Modal from './Modal';
-import Apple from './Apple';
-import Microsoft from './Microsoft';
+import ModalButton from './ModalButton'
+import Modal from './Modal'
+import Apple from './Apple'
+import Microsoft from './Microsoft'
 
 function Menu() {
     const firstObject = {

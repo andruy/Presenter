@@ -1,11 +1,43 @@
+import { use } from "react"
 import { useState, useEffect, useRef } from "react"
 
-function Apple() {
+const Apple = ({ sendDataToParent, sendOnPageLoad }) => {
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
     const [linksArray, setLinksArray] = useState([])
-    const [isDisabled, setIsDisabled] = useState(true)
+    const [plusIsDisabled, setPlusIsDisabled] = useState(true)
+    const [accordionIsDisabled, setAccordionIsDisabled] = useState(true)
     const buttonRef = useRef(null)
+
+    useEffect(() => {
+        const theFunction = {
+            async send(data) {
+                const response = await fetch('/yte', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                if (response.status === 200) {
+                    const result = await response.json()
+                    return result
+                } else {
+                    console.error(response)
+                    console.log(data)
+                    const result = {
+                        report: "Something went wrong"
+                    }
+                    return result
+                }
+            }
+        }
+        sendOnPageLoad(theFunction)
+    }, [])
+
+    useEffect(() => {
+        setPlusIsDisabled(inputValue.trim() === '' ? true : false)
+    }, [inputValue])
 
     useEffect(() => {
         setButtonText(linksArray.length > 0 ? `Total links: ${linksArray.length}` : 'Empty')
@@ -15,7 +47,14 @@ function Apple() {
                 button.click()
             }
         }
-        setIsDisabled(linksArray.length > 0 ? false : true)
+        setAccordionIsDisabled(linksArray.length > 0 ? false : true)
+        const theObject = {
+            data: {
+                links: linksArray
+            },
+            status: linksArray.length > 0 ? false : true
+        }
+        sendDataToParent(theObject)
     }, [linksArray])
 
     const handleChange = event => {
@@ -35,45 +74,18 @@ function Apple() {
         }
     }
 
-    // TODO: Send linksArray to the server
-
-    async function sendAppleList() {
-        const data = {
-            links: linksArray
-        }
-    
-        const response = await fetch('/yte', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        })
-        if (response.status === 200) {
-            const result = await response.json()
-            return result
-        } else {
-            console.log(response.status)
-            console.log(linksArray)
-            const result = {
-                report: "Something went wrong"
-            }
-            return result
-        }
-    }
-
     return (
         <div className="row g-2 align-items-center">
             <div className="col">
                 <input value={inputValue} onKeyDown={handleKeyDown} onChange={handleChange} className="form-control" type="text" placeholder="Enter links..." />
             </div>
             <div className="col-auto">
-                <button onClick={handleAddLink} type="button" className="btn btn-outline-secondary"><i className="fa-solid fa-plus"></i></button>
+                <button onClick={handleAddLink} type="button" className="btn btn-outline-secondary" disabled={plusIsDisabled}><i className="fa-solid fa-plus"></i></button>
             </div>
             <div className="accordion" id="accordionExample">
                 <div className="accordion-item">
                     <h2 className="accordion-header">
-                        <button ref={buttonRef} className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox" aria-expanded="false" aria-controls="collapseBox" disabled={isDisabled}>
+                        <button ref={buttonRef} className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox" aria-expanded="false" aria-controls="collapseBox" disabled={accordionIsDisabled}>
                             {buttonText}
                         </button>
                     </h2>
