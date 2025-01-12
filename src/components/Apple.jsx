@@ -19,16 +19,13 @@ const Apple = ({ sendDataToParent, sendOnPageLoad }) => {
                     },
                     body: JSON.stringify(data)
                 })
-                if (response.status === 200) {
+                if (response.ok) {
                     const result = await response.json()
                     return result
                 } else {
                     console.error(response)
                     console.log(data)
-                    const result = {
-                        report: "Something went wrong"
-                    }
-                    return result
+                    return "Something went wrong"
                 }
             }
         }
