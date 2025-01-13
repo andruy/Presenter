@@ -3,6 +3,7 @@ import { useState, useRef } from 'react'
 const Modal = ({ number, title, Content }) => {
     const [endpoint, setEndpoint] = useState(null)
     const [dataFromChild, setDataFromChild] = useState(null)
+    const [isSuccess, setIsSuccess] = useState(false)
     const [isDisabled, setIsDisabled] = useState(true)
     const [showCheckmark, setShowCheckmark] = useState(false)
     const [showX, setShowX] = useState(false)
@@ -10,11 +11,11 @@ const Modal = ({ number, title, Content }) => {
     const showingTime = 5000
 
     const toggleCheckmark = () => {
-        setShowCheckmark((prev) => !prev)
+        setShowCheckmark(prev => !prev)
     }
 
     const toggleX = () => {
-        setShowX((prev) => !prev)
+        setShowX(prev => !prev)
     }
 
     const handleEndpoint = data => {
@@ -36,20 +37,22 @@ const Modal = ({ number, title, Content }) => {
             if (response.report) {
                 spanRef.current.classList.toggle('visually-hidden')
                 toggleCheckmark()
+                setIsSuccess(true)
 
                 setTimeout(() => {
                     toggleCheckmark()
+                    setIsDisabled(false)
                 }, showingTime)
             } else {
                 spanRef.current.classList.toggle('visually-hidden')
                 toggleX()
+                setIsSuccess(false)
 
                 setTimeout(() => {
                     toggleX()
+                    setIsDisabled(false)
                 }, showingTime)
             }
-
-            setIsDisabled(false)
         }
     }
 
@@ -62,7 +65,7 @@ const Modal = ({ number, title, Content }) => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <Content sendDataToParent={handleDataFromChild} sendOnPageLoad={handleEndpoint} />
+                        <Content sendDataToParent={handleDataFromChild} sendOnPageLoad={handleEndpoint} responseFromParent={isSuccess} updateResponse={setIsSuccess} />
                     </div>
                     <div className="modal-footer">
                         <span ref={spanRef} className="spinner-border text-primary visually-hidden" role="status"></span>

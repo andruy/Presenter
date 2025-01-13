@@ -1,7 +1,6 @@
-import { use } from "react"
 import { useState, useEffect, useRef } from "react"
 
-const Apple = ({ sendDataToParent, sendOnPageLoad }) => {
+const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
     const [linksArray, setLinksArray] = useState([])
@@ -21,6 +20,7 @@ const Apple = ({ sendDataToParent, sendOnPageLoad }) => {
                 })
                 if (response.ok) {
                     const result = await response.json()
+                    console.log(result.report)
                     return result
                 } else {
                     console.error(response)
@@ -31,6 +31,13 @@ const Apple = ({ sendDataToParent, sendOnPageLoad }) => {
         }
         sendOnPageLoad(theFunction)
     }, [])
+
+    useEffect(() => {
+        if (responseFromParent) {
+            setLinksArray([])
+            updateResponse(false)
+        }
+    }, [responseFromParent])
 
     useEffect(() => {
         setPlusIsDisabled(inputValue.trim() === '' ? true : false)
