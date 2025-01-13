@@ -4,10 +4,18 @@ const Modal = ({ number, title, Content }) => {
     const [endpoint, setEndpoint] = useState(null)
     const [dataFromChild, setDataFromChild] = useState(null)
     const [isDisabled, setIsDisabled] = useState(true)
+    const [showCheckmark, setShowCheckmark] = useState(false)
+    const [showX, setShowX] = useState(false)
     const spanRef = useRef(null)
-    const checkmarkRef = useRef(null)
-    const xRef = useRef(null)
     const showingTime = 5000
+
+    const toggleCheckmark = () => {
+        setShowCheckmark((prev) => !prev)
+    }
+
+    const toggleX = () => {
+        setShowX((prev) => !prev)
+    }
 
     const handleEndpoint = data => {
         setEndpoint(data)
@@ -19,7 +27,7 @@ const Modal = ({ number, title, Content }) => {
     }
 
     async function submit() {
-        if (spanRef.current && checkmarkRef.current && xRef.current) {
+        if (spanRef.current) {
             setIsDisabled(true)
             spanRef.current.classList.toggle('visually-hidden')
 
@@ -27,17 +35,17 @@ const Modal = ({ number, title, Content }) => {
 
             if (response.report) {
                 spanRef.current.classList.toggle('visually-hidden')
-                checkmarkRef.current.classList.toggle('visually-hidden')
+                toggleCheckmark()
 
                 setTimeout(() => {
-                    checkmarkRef.current.classList.toggle('visually-hidden')
+                    toggleCheckmark()
                 }, showingTime)
             } else {
                 spanRef.current.classList.toggle('visually-hidden')
-                xRef.current.classList.toggle('visually-hidden')
+                toggleX()
 
                 setTimeout(() => {
-                    xRef.current.classList.toggle('visually-hidden')
+                    toggleX()
                 }, showingTime)
             }
 
@@ -58,17 +66,21 @@ const Modal = ({ number, title, Content }) => {
                     </div>
                     <div className="modal-footer">
                         <span ref={spanRef} className="spinner-border text-primary visually-hidden" role="status"></span>
-                        <div ref={checkmarkRef} className="checkmark-container visually-hidden">
-                            <svg className="checkmark" viewBox="0 0 52 52">
-                                <path d="M14 27 L22 35 L38 17" />
-                            </svg>
-                        </div>
-                        <div ref={xRef} className="x-container visually-hidden">
-                            <svg className="xmark" viewBox="0 0 52 52">
-                                <path d="M14 14 L38 38" />
-                                <path d="M38 14 L14 38" />
-                            </svg>
-                        </div>
+                        {
+                            showCheckmark && <div className="checkmark-container">
+                                <svg className="checkmark" viewBox="0 0 52 52">
+                                    <path d="M14 27 L22 35 L38 17" />
+                                </svg>
+                            </div>
+                        }
+                        {
+                            showX && <div className="x-container">
+                                <svg className="xmark" viewBox="0 0 52 52">
+                                    <path d="M14 14 L38 38" />
+                                    <path d="M38 14 L14 38" />
+                                </svg>
+                            </div>
+                        }
                         <button onClick={() => submit()} type="button" className="btn btn-outline-primary" disabled={isDisabled}>Submit</button>
                     </div>
                 </div>
