@@ -79,11 +79,9 @@ const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRes
     }
 
     return (
-        <div className="row g-2 align-items-center">
-            <div className="col">
-                <input value={inputValue} onKeyDown={handleKeyDown} onChange={handleChange} className="form-control" type="text" placeholder="Enter links..." />
-            </div>
-            <div className="col-auto">
+        <>
+            <div className="input-group mb-3">
+                <input value={inputValue} onKeyDown={handleKeyDown} onChange={handleChange} className="form-control form-control-lg" type="text" placeholder="Enter links..." />
                 <button onClick={handleAddLink} type="button" className="btn btn-outline-secondary" disabled={plusIsDisabled}><i className="fa-solid fa-plus"></i></button>
             </div>
             <div className="accordion" id="accordionExample">
@@ -95,7 +93,7 @@ const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRes
                     </h2>
                     <div id="collapseBox" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div className="accordion-body">
-                            <ul className="list-group">
+                            <ul className="list-group list-group-flush">
                                 {linksArray.map((link, index) => (
                                     <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                                         <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', flex: 1 }}>
@@ -111,7 +109,7 @@ const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRes
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

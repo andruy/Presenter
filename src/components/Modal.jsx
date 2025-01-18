@@ -57,7 +57,7 @@ const Modal = ({ number, title, Content }) => {
     }
 
     return (
-        <div className="modal fade" id={"staticBackdrop" + number} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby={"staticBackdropLabel" + number} aria-hidden="true">
+        <div className="modal fade" id={"staticBackdrop" + number} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby={"staticBackdropLabel" + number} aria-modal>
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div className="modal-content">
                     <div className="modal-header">
