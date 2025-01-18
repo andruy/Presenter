@@ -7,6 +7,7 @@ const Microsoft = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
     const [linksObject, setLinksObject] = useState({})
     const [plusIsDisabled, setPlusIsDisabled] = useState(true)
     const [accordionIsDisabled, setAccordionIsDisabled] = useState(true)
+    const [directories, setDirectories] = useState([])
     const buttonRef = useRef(null)
 
     useEffect(() => {
@@ -31,6 +32,15 @@ const Microsoft = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
             }
         }
         sendOnPageLoad(theFunction)
+
+        async function getDirectories() {
+            const response = await fetch('/ytd')
+            let data = await response.json()
+
+            data.sort((a, b) => a.name.localeCompare(b.name))
+            setDirectories(data.map(item => item.name))
+        }
+        getDirectories()
     }, [])
 
     useEffect(() => {
@@ -90,9 +100,9 @@ const Microsoft = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
         <>
             <select value={selectValue} onChange={handleSelectChange} className="form-select form-select-lg mb-3" aria-label="Default select example">
                 <option value="" disabled hidden>Choose directory...</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                {directories.map((directory, index) => (
+                    <option key={index} value={directory}>{directory}</option>
+                ))}
             </select>
             <div className="input-group mb-3">
                 <input value={inputValue} onKeyDown={handleKeyDown} onChange={handleInputChange} className="form-control form-control-lg" type="text" placeholder="Enter links..." />
