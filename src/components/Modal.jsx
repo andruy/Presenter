@@ -65,7 +65,7 @@ const Modal = ({ number, title, Content }) => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <Content sendDataToParent={handleDataFromChild} sendOnPageLoad={handleEndpoint} responseFromParent={isSuccess} updateResponse={setIsSuccess} />
+                        <Content sendDataToParent={handleDataFromChild} sendOnPageLoad={handleEndpoint} responseFromParent={isSuccess} updateResponse={setIsSuccess} idSuffix={number} />
                     </div>
                     <div className="modal-footer">
                         <span ref={spanRef} className="spinner-border text-primary visually-hidden" role="status"></span>
