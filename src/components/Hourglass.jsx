@@ -46,29 +46,38 @@ const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
     }
 
     const handleAddTask = () => {
-        console.log(radioValue);
-        console.log("logging from handleAddTask");
-        
         if (inputValue.trim() !== '' && Number(inputValue) > 0) {
-            setTasksArray([...tasksArray, {
-                timeframe: inputValue * 60000,
+            const newItem = {
+                timeframe: minutesToMilliseconds(Number(inputValue)),
                 email: {
                     to: "andruycira@icloud.com",
                     subject: radioValue,
                     body: "Lorem ipsum"
                 }
-            }])
+            }
+
+            setTasksArray([...tasksArray, tasksArray.length > 0 ? newItemUpdated(newItem) : newItem])
             setInputValue('')
         }
+    }
+
+    function newItemUpdated(newTask) {
+        if (tasksArray[tasksArray.length - 1].email.subject === "Turn AC on" && newTask.email.subject === "Turn AC on") {
+            newTask.timeframe += minutesToMilliseconds(120)
+        }
+
+        newTask.timeframe += tasksArray[tasksArray.length - 1].timeframe
+
+        return newTask
     }
 
     useEffect(() => {
         const input = inputRef.current
         if (input) {
             if (input.checked) {
-                setRadioValue("AC will stop ")
+                setRadioValue("Turn AC off")
             } else {
-                setRadioValue("AC will start ")
+                setRadioValue("Turn AC on")
             }
         }
     }, [handleAddTask])
@@ -77,6 +86,10 @@ const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
         if (event.key === 'Enter') {
             handleAddTask()
         }
+    }
+
+    function minutesToMilliseconds(minutes) {
+        return minutes * 60000
     }
 
     useEffect(() => {
@@ -132,7 +145,12 @@ const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
                                 {tasksArray.map((task, index) => (
                                     <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                                         <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', flex: 1 }}>
-                                            {task.email.subject}
+                                            {
+                                                task.email.subject  === "Turn AC on" ?
+                                                    `AC will start ${new Date(task.timeframe + Date.now()).toLocaleString()}`
+                                                    :
+                                                    `AC will stop ${new Date(task.timeframe + Date.now()).toLocaleString()}`
+                                            }
                                         </div>
                                         <button onClick={() => {
                                             const newTasksArray = tasksArray.filter((_, i) => i !== index)
