@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+.spacer-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 /* Center the checkmark */
 .checkmark-container {
   display: flex;

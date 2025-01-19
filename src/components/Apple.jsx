@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 
-const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse, idSuffix }) => {
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
     const [linksArray, setLinksArray] = useState([])
@@ -82,16 +82,18 @@ const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRes
         <>
             <div className="input-group mb-3">
                 <input value={inputValue} onKeyDown={handleKeyDown} onChange={handleChange} className="form-control form-control-lg" type="text" placeholder="Enter links..." />
-                <button onClick={handleAddLink} type="button" className="btn btn-outline-secondary" disabled={plusIsDisabled}><i className="fa-solid fa-plus"></i></button>
+                <button onClick={handleAddLink} type="button" className="btn btn-outline-secondary" disabled={plusIsDisabled}>
+                    <i className="fa-solid fa-plus"></i>
+                </button>
             </div>
-            <div className="accordion" id="accordionExample">
+            <div className="accordion" id={"accordionExample" + idSuffix}>
                 <div className="accordion-item">
                     <h2 className="accordion-header">
-                        <button ref={buttonRef} className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBox" aria-expanded="false" aria-controls="collapseBox" disabled={accordionIsDisabled}>
+                        <button ref={buttonRef} className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={"#collapseBox" + idSuffix} aria-expanded="false" aria-controls={"collapseBox" + idSuffix} disabled={accordionIsDisabled}>
                             {buttonText}
                         </button>
                     </h2>
-                    <div id="collapseBox" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div id={"collapseBox" + idSuffix} className="accordion-collapse collapse" data-bs-parent={"#accordionExample" + idSuffix}>
                         <div className="accordion-body">
                             <ul className="list-group list-group-flush">
                                 {linksArray.map((link, index) => (
