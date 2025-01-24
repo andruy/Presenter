@@ -20,7 +20,7 @@ function Menu() {
 
     const thirdObject = {
         id: ++idProvider,
-        name: <i class="fa-solid fa-folder-closed"></i>
+        name: <i className="fa-solid fa-folder-closed"></i>
     }
 
     const fourthObject = {
