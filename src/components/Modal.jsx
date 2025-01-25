@@ -65,19 +65,19 @@ const Modal = ({ number, title, Content }) => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <Content sendDataToParent={handleDataFromChild} sendOnPageLoad={handleEndpoint} responseFromParent={isSuccess} updateResponse={setIsSuccess} idSuffix={number} />
+                        <Content sendDataToParent={handleDataFromChild} sendOnPageLoad={handleEndpoint} responseFromParent={isSuccess} updateResponse={setIsSuccess} />
                     </div>
                     <div className="modal-footer">
                         <span ref={spanRef} className="spinner-border text-primary visually-hidden" role="status"></span>
                         {
-                            showCheckmark && <div className="checkmark-container">
+                            showCheckmark && <div>
                                 <svg className="checkmark" viewBox="0 0 52 52">
                                     <path d="M14 27 L22 35 L38 17" />
                                 </svg>
                             </div>
                         }
                         {
-                            showX && <div className="x-container">
+                            showX && <div>
                                 <svg className="xmark" viewBox="0 0 52 52">
                                     <path d="M14 14 L38 38" />
                                     <path d="M38 14 L14 38" />

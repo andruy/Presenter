@@ -5,18 +5,6 @@
   text-align: center;
 }
 
-.spacer-evenly {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-/* Center the checkmark */
-.checkmark-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 /* SVG Styling */
 .checkmark {
   width: 2rem;
@@ -38,12 +26,6 @@
   to {
     stroke-dashoffset: 0; /* Fully reveal the stroke */
   }
-}
-/* Center the "X" */
-.x-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 /* SVG Styling */
