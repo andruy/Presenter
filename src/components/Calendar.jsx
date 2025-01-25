@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 
 const Calendar = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse, idSuffix }) => {
     const [selectValue, setSelectValue] = useState("")
@@ -49,7 +49,7 @@ const Calendar = ({ sendDataToParent, sendOnPageLoad, responseFromParent, update
     }, [responseFromParent])
 
     useEffect(() => {
-        setPlusIsDisabled(!dateInput || selectValue == '' ? true : false)
+        setPlusIsDisabled(!dateInput || selectValue === '' ? true : false)
     }, [dateInput, selectValue])
 
     useEffect(() => {
@@ -102,11 +102,9 @@ const Calendar = ({ sendDataToParent, sendOnPageLoad, responseFromParent, update
         <>
             <select value={selectValue} onChange={handleSelectChange} className="form-select form-select-lg mb-3" aria-label="Default select example">
                 <option value="" disabled hidden>Choose action...</option>
-                {actions.map((directory, index) => (
-                    <option key={index} value={directory}>{directory}</option>
+                {actions.map((action, index) => (
+                    <option key={index} value={action}>{action}</option>
                 ))}
-                <option value="Turn AC on">Turn AC on</option>
-                <option value="Turn AC off">Turn AC off</option>
             </select>
             <div className="input-group mb-3">
                 <input value={dateInput} onKeyDown={handleKeyDown} onChange={handleInputChange} className="form-control form-control-lg" type="datetime-local" placeholder="Enter links..." />
