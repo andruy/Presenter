@@ -75,7 +75,7 @@ const Folder = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRe
             <ul className="list-group list-group-flush">
                 <li className="list-group-item d-flex justify-content-between align-items-center">
                     <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', flex: 1 }}>
-                        /the/new/folder/{folderName}
+                        <span style={{color: "#6c757d"}}>/the/new/folder/</span>{folderName}
                     </div>
                     <button onClick={() => setFolderName("{}")} className="btn btn-outline-danger btn-sm" disabled={folderName === '{}'}>
                         <i className="fa-solid fa-arrow-rotate-left"></i>

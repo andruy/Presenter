@@ -4,6 +4,7 @@ import Apple from './Apple'
 import Microsoft from './Microsoft'
 import Folder from './Folder'
 import Hourglass from './Hourglass'
+import Calendar from './Calendar'
 
 function Menu() {
     let idProvider = 0
@@ -28,6 +29,11 @@ function Menu() {
         name: <i className="fa-regular fa-hourglass-half"></i>
     }
 
+    const fithObject = {
+        id: ++idProvider,
+        name: <i className="fa-regular fa-calendar-days"></i>
+    }
+
     return (
         <>
             <div className="btn-group-vertical">
@@ -35,11 +41,13 @@ function Menu() {
                 <ModalButton number={secondObject.id} title={secondObject.name} />
                 <ModalButton number={thirdObject.id} title={thirdObject.name} />
                 <ModalButton number={fourthObject.id} title={fourthObject.name} />
+                <ModalButton number={fithObject.id} title={fithObject.name} />
             </div>
             <Modal number={firstObject.id} title={firstObject.name} Content={Apple} />
             <Modal number={secondObject.id} title={secondObject.name} Content={Microsoft} />
             <Modal number={thirdObject.id} title={thirdObject.name} Content={Folder} />
             <Modal number={fourthObject.id} title={fourthObject.name} Content={Hourglass} />
+            <Modal number={fithObject.id} title={fithObject.name} Content={Calendar} />
         </>
     )
 }
