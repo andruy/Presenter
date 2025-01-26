@@ -1,13 +1,12 @@
 import { useState, useRef } from 'react'
 
 const Modal = ({ number, title, Content }) => {
-    const [endpoint, setEndpoint] = useState(null)
-    const [dataFromChild, setDataFromChild] = useState(null)
-    const [isSuccess, setIsSuccess] = useState(false)
     const [isDisabled, setIsDisabled] = useState(true)
     const [showCheckmark, setShowCheckmark] = useState(false)
     const [showX, setShowX] = useState(false)
+    const contentRef = useRef(null)
     const spanRef = useRef(null)
+    const buttonRef = useRef(null)
     const showingTime = 5000
 
     const toggleCheckmark = () => {
@@ -18,26 +17,16 @@ const Modal = ({ number, title, Content }) => {
         setShowX(prev => !prev)
     }
 
-    const handleEndpoint = data => {
-        setEndpoint(data)
-      }
-
-    const handleDataFromChild = data => {
-        setDataFromChild(data.data)
-        setIsDisabled(data.status)
-    }
-
     async function submit() {
-        if (spanRef.current) {
+        if (spanRef.current && contentRef.current) {
             setIsDisabled(true)
             spanRef.current.classList.toggle('visually-hidden')
 
-            const response = await endpoint.send(dataFromChild)
+            const response = await contentRef.current.send()
 
             if (response.report) {
                 spanRef.current.classList.toggle('visually-hidden')
                 toggleCheckmark()
-                setIsSuccess(true)
 
                 setTimeout(() => {
                     toggleCheckmark()
@@ -46,7 +35,6 @@ const Modal = ({ number, title, Content }) => {
             } else {
                 spanRef.current.classList.toggle('visually-hidden')
                 toggleX()
-                setIsSuccess(false)
 
                 setTimeout(() => {
                     toggleX()
@@ -65,7 +53,7 @@ const Modal = ({ number, title, Content }) => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <Content sendDataToParent={handleDataFromChild} sendOnPageLoad={handleEndpoint} responseFromParent={isSuccess} updateResponse={setIsSuccess} />
+                        <Content isDisabled={setIsDisabled} parentButtonRef={buttonRef} ref={contentRef} />
                     </div>
                     <div className="modal-footer">
                         <span ref={spanRef} className="spinner-border text-primary visually-hidden" role="status"></span>
@@ -84,7 +72,7 @@ const Modal = ({ number, title, Content }) => {
                                 </svg>
                             </div>
                         }
-                        <button onClick={() => submit()} type="button" className="btn btn-outline-primary" disabled={isDisabled}>Submit</button>
+                        <button ref={buttonRef} onClick={submit} type="button" className="btn btn-outline-primary" disabled={isDisabled}>Submit</button>
                     </div>
                 </div>
             </div>

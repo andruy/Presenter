@@ -1,41 +1,51 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react"
 
-const Pollo = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+const Pollo = forwardRef(({ isDisabled, parentButtonRef }, ref) => {
     const [inputValue, setInputValue] = useState("")
     const [mealSelectValue, setMealSelectValue] = useState("")
     const [typeSelectValue, setTypeSelectValue] = useState("")
 
-    useEffect(() => {
-        const theFunction = {
-            async send(theBody) {
-                const response = await fetch('/deletetask', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(theBody)
-                })
-                if (response.ok) {
-                    const result = await response.json()
-                    console.log(result.report)
-                    return result
-                } else {
-                    console.error(response)
-                    console.log(theBody)
-                    return "Something went wrong"
-                }
-            }
+    async function send() {
+        const content = {
+            code: inputValue,
+            meal: mealSelectValue,
+            type: typeSelectValue
         }
-        sendOnPageLoad(theFunction)
-    }, [])
+
+        const response = await fetch('/deletetask', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(content)
+        })
+        if (response.ok) {
+            const result = await response.json()
+            console.log(result.report)
+            setInputValue("")
+            return result
+        } else {
+            console.error(response)
+            console.log(content)
+            return "Something went wrong"
+        }
+    }
+
+    useImperativeHandle(ref, () => ({
+        send,
+    }))
+
+    useEffect(() => {
+        inputValue.length === 16 ? isDisabled(false) : isDisabled(true)
+    }, [inputValue])
 
     const handleChange = event => {
         setInputValue(event.target.value)
     }
 
     const handleKeyDown = event => {
-        if (event.key === 'Enter') {
-            handleAddBody()
+        if (event.key === 'Enter' && parentButtonRef.current) {
+            parentButtonRef.current.click()
         }
     }
 
@@ -45,18 +55,6 @@ const Pollo = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRes
 
     const handleTypeSelectChange = event => {
         setTypeSelectValue(event.target.value)
-    }
-
-    const handleAddBody = () => {
-        if (inputValue && mealSelectValue && typeSelectValue) {
-            setInputValue('')
-            sendDataToParent({
-                    code: inputValue,
-                    meal: mealSelectValue,
-                    type: typeSelectValue
-                }
-            )
-        }
     }
 
     return (
@@ -77,6 +75,6 @@ const Pollo = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRes
             </select>
         </>
     )
-}
+})
 
 export default Pollo
