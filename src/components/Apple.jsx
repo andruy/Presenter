@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 
-const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse, idSuffix }) => {
+const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+    const idSuffix = "Apple"
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
     const [linksArray, setLinksArray] = useState([])

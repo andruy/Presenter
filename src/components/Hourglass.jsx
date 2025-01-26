@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 
-const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse, idSuffix }) => {
+const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+    const idSuffix = "Hourglass"
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
     const [tasksArray, setTasksArray] = useState([])
@@ -116,7 +117,7 @@ const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
 
     return (
         <>
-            <div className="spacer-evenly mb-3">
+            <div className="d-flex justify-content-evenly mb-3">
                 <input type="radio" className="btn-check" name="options-outlined" id={"success-outlined" + idSuffix} autoComplete="off" />
                 <label className="btn btn-outline-success" htmlFor={"success-outlined" + idSuffix}>
                     <i className="fa-solid fa-play"></i>

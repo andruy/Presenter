@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-const Calendar = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse, idSuffix }) => {
+const Calendar = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
     const [selectValue, setSelectValue] = useState("")
     const [actions, setActions] = useState([])
     const [dateInput, setDateInput] = useState("")

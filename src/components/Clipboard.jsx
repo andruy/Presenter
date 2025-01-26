@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-const Clipboard = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse, idSuffix }) => {
+const Clipboard = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
     const [selectValue, setSelectValue] = useState("")
     const [tasks, setTasks] = useState([])
     const [plusIsDisabled, setPlusIsDisabled] = useState(true)

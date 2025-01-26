@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 
-const Microsoft = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse, idSuffix }) => {
+const Microsoft = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+    const idSuffix = "Microsoft"
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
     const [selectValue, setSelectValue] = useState("")

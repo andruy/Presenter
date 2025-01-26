@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-const Folder = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse, idSuffix }) => {
+const Folder = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
     const [inputValue, setInputValue] = useState("")
     const [folderName, setFolderName] = useState("{}")
     const [plusIsDisabled, setPlusIsDisabled] = useState(true)
