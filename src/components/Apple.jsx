@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react"
 
-const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+const Apple = forwardRef(({ isDisabled }, ref) => {
     const idSuffix = "Apple"
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
@@ -9,36 +9,33 @@ const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRes
     const [accordionIsDisabled, setAccordionIsDisabled] = useState(true)
     const buttonRef = useRef(null)
 
-    useEffect(() => {
-        const theFunction = {
-            async send(data) {
-                const response = await fetch('/yte', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                })
-                if (response.ok) {
-                    const result = await response.json()
-                    console.log(result.report)
-                    return result
-                } else {
-                    console.error(response)
-                    console.log(data)
-                    return "Something went wrong"
-                }
-            }
+    async function send() {
+        const data = {
+            links: linksArray
         }
-        sendOnPageLoad(theFunction)
-    }, [])
 
-    useEffect(() => {
-        if (responseFromParent) {
+        const response = await fetch('/yte', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        if (response.ok) {
+            const result = await response.json()
+            console.log(result.report)
             setLinksArray([])
-            updateResponse(false)
+            return result
+        } else {
+            console.error(response)
+            console.log(data)
+            return "Something went wrong"
         }
-    }, [responseFromParent])
+    }
+
+    useImperativeHandle(ref, () => ({
+        send,
+    }))
 
     useEffect(() => {
         setPlusIsDisabled(inputValue.trim() === '' ? true : false)
@@ -52,14 +49,14 @@ const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRes
                 button.click()
             }
         }
-        setAccordionIsDisabled(linksArray.length > 0 ? false : true)
-        const theObject = {
-            data: {
-                links: linksArray
-            },
-            status: linksArray.length > 0 ? false : true
+
+        if (linksArray.length > 0) {
+            setAccordionIsDisabled(false)
+            isDisabled(false)
+        } else {
+            setAccordionIsDisabled(true)
+            isDisabled(true)
         }
-        sendDataToParent(theObject)
     }, [linksArray])
 
     const handleChange = event => {
@@ -102,7 +99,7 @@ const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRes
                                         <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', flex: 1 }}>
                                             {link}
                                         </div>
-                                        <button onClick={() => setLinksArray(linksArray.filter((_, i) => i !== index))} className="btn btn-outline-danger btn-sm">
+                                        <button onClick={() => setLinksArray(linksArray.filter((_, i) => i !== index))} className="btn btn-outline-danger btn-sm ms-2">
                                             <i className="fa-solid fa-trash"></i>
                                         </button>
                                     </li>
@@ -114,6 +111,6 @@ const Apple = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRes
             </div>
         </>
     )
-}
+})
 
 export default Apple

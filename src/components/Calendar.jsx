@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react"
 
-const Calendar = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+const Calendar = forwardRef(({ isDisabled }, ref) => {
     const [selectValue, setSelectValue] = useState("")
     const [actions, setActions] = useState([])
     const [dateInput, setDateInput] = useState("")
@@ -8,58 +8,49 @@ const Calendar = ({ sendDataToParent, sendOnPageLoad, responseFromParent, update
     const [plusIsDisabled, setPlusIsDisabled] = useState(true)
     const [tasksArray, setTasksArray] = useState([])
 
-    useEffect(() => {
-        const theFunction = {
-            async send(treeData) {
-                const response = await fetch('/emailtask', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(treeData)
-                })
-                if (response.ok) {
-                    const result = await response.json()
-                    console.log(result.report)
-                    return result
-                } else {
-                    console.error(response)
-                    console.log(treeData)
-                    return "Something went wrong"
-                }
-            }
+    async function send() {
+        const treeData = {
+            tasks: datePlaceholder === "" ? [] : tasksArray
         }
-        sendOnPageLoad(theFunction)
 
-        async function getActions() {
-            const response = await fetch('/tasks')
-            const data = await response.json()
-
-            setActions(data)
-        }
-        getActions()
-    }, [])
-
-    useEffect(() => {
-        if (responseFromParent) {
+        const response = await fetch('/emailtask', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(treeData)
+        })
+        if (response.ok) {
+            const result = await response.json()
+            console.log(result.report)
             setTasksArray([])
             setDatePlaceholder("")
-            updateResponse(false)
+            return result
+        } else {
+            console.error(response)
+            console.log(treeData)
+            return "Something went wrong"
         }
-    }, [responseFromParent])
+    }
+
+    useImperativeHandle(ref, () => ({
+        send,
+        getActions,
+    }))
+
+    async function getActions() {
+        const response = await fetch('/tasks')
+        const data = await response.json()
+
+        setActions(data)
+    }
 
     useEffect(() => {
         setPlusIsDisabled(!dateInput || selectValue === '' ? true : false)
     }, [dateInput, selectValue])
 
     useEffect(() => {
-        const theList = {
-            data: {
-                tasks: datePlaceholder === "" ? [] : tasksArray
-            },
-            status: datePlaceholder === "" ? true : false
-        }
-        sendDataToParent(theList)
+        datePlaceholder === "" ? isDisabled(true) : isDisabled(false)
     }, [datePlaceholder])
 
     const handleSelectChange = event => {
@@ -128,13 +119,13 @@ const Calendar = ({ sendDataToParent, sendOnPageLoad, responseFromParent, update
                             datePlaceholder
                         }
                     </div>
-                    <button onClick={() => setDatePlaceholder("")} className="btn btn-outline-danger btn-sm" disabled={datePlaceholder === ''}>
+                    <button onClick={() => setDatePlaceholder("")} className="btn btn-outline-danger btn-sm ms-2" disabled={datePlaceholder === ''}>
                         <i className="fa-solid fa-arrow-rotate-left"></i>
                     </button>
                 </li>
             </ul>
         </>
     )
-}
+})
 
 export default Calendar

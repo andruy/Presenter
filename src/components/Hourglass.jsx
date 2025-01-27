@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react"
 
-const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+const Hourglass = forwardRef(({ isDisabled }, ref) => {
     const idSuffix = "Hourglass"
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
@@ -11,36 +11,33 @@ const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
     const buttonRef = useRef(null)
     const inputRef = useRef(null)
 
-    useEffect(() => {
-        const theFunction = {
-            async send(data) {
-                const response = await fetch('/emailtask', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                })
-                if (response.ok) {
-                    const result = await response.json()
-                    console.log(result.report)
-                    return result
-                } else {
-                    console.error(response)
-                    console.log(data)
-                    return "Something went wrong"
-                }
-            }
+    async function send() {
+        const data = {
+            tasks: tasksArray
         }
-        sendOnPageLoad(theFunction)
-    }, [])
 
-    useEffect(() => {
-        if (responseFromParent) {
+        const response = await fetch('/emailtask', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        if (response.ok) {
+            const result = await response.json()
+            console.log(result.report)
             setTasksArray([])
-            updateResponse(false)
+            return result
+        } else {
+            console.error(response)
+            console.log(data)
+            return "Something went wrong"
         }
-    }, [responseFromParent])
+    }
+
+    useImperativeHandle(ref, () => ({
+        send,
+    }))
 
     const handleChange = event => {
         setInputValue(event.target.value)
@@ -106,13 +103,8 @@ const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
             }
         }
         setAccordionIsDisabled(tasksArray.length > 0 ? false : true)
-        const theObject = {
-            data: {
-                tasks: tasksArray
-            },
-            status: tasksArray.length > 0 ? false : true
-        }
-        sendDataToParent(theObject)
+
+        tasksArray.length > 0 ? isDisabled(false) : isDisabled(true)
     }, [tasksArray])
 
     return (
@@ -156,7 +148,7 @@ const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
                                         <button onClick={() => {
                                             const newTasksArray = tasksArray.filter((_, i) => i !== index)
                                             setTasksArray(newTasksArray)
-                                        }} className="btn btn-outline-danger btn-sm">
+                                        }} className="btn btn-outline-danger btn-sm ms-2">
                                             <i className="fa-solid fa-trash"></i>
                                         </button>
                                     </li>
@@ -168,6 +160,6 @@ const Hourglass = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
             </div>
         </>
     )
-}
+})
 
 export default Hourglass
