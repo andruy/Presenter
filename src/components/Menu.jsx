@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import ModalButton from './ModalButton'
 import Modal from './Modal'
 import Apple from './Apple'
@@ -11,59 +12,66 @@ import Pollo from './Pollo'
 function Menu() {
     let idProvider = 0
 
-    const firstObject = {
+    const apple = {
         id: ++idProvider,
-        name: <i className="fa-brands fa-apple"></i>
+        name: <i className="fa-brands fa-apple"></i>,
+        ref: useRef(null)
     }
 
-    const secondObject = {
+    const microsoft = {
         id: ++idProvider,
-        name: <i className="fa-brands fa-microsoft"></i>
+        name: <i className="fa-brands fa-microsoft"></i>,
+        ref: useRef(null)
     }
 
-    const thirdObject = {
+    const folder = {
         id: ++idProvider,
-        name: <i className="fa-solid fa-folder-closed"></i>
+        name: <i className="fa-solid fa-folder-closed"></i>,
+        ref: useRef(null)
     }
 
-    const fourthObject = {
+    const hourglass = {
         id: ++idProvider,
-        name: <i className="fa-regular fa-hourglass-half"></i>
+        name: <i className="fa-regular fa-hourglass-half"></i>,
+        ref: useRef(null)
     }
 
-    const fithObject = {
+    const calendar = {
         id: ++idProvider,
-        name: <i className="fa-regular fa-calendar-days"></i>
+        name: <i className="fa-regular fa-calendar-days"></i>,
+        ref: useRef(null)
     }
 
-    const sixthObject = {
+    const clipboard = {
         id: ++idProvider,
-        name: <i className="fa-regular fa-clipboard"></i>
+        name: <i className="fa-regular fa-clipboard"></i>,
+        ref: useRef(null)
     }
 
-    const seventhObject = {
+    const pollo = {
         id: ++idProvider,
-        name: <i className="fa-solid fa-drumstick-bite"></i>
+        name: <i className="fa-solid fa-drumstick-bite"></i>,
+        ref: useRef(null)
     }
 
     return (
         <>
             <div className="btn-group-vertical">
-                <ModalButton number={firstObject.id} title={firstObject.name} />
-                <ModalButton number={secondObject.id} title={secondObject.name} />
-                <ModalButton number={thirdObject.id} title={thirdObject.name} />
-                <ModalButton number={fourthObject.id} title={fourthObject.name} />
-                <ModalButton number={fithObject.id} title={fithObject.name} />
-                <ModalButton number={sixthObject.id} title={sixthObject.name} />
-                <ModalButton number={seventhObject.id} title={seventhObject.name} />
+                <ModalButton number={apple.id} title={apple.name} onClick={() => {}} />
+                <ModalButton number={microsoft.id} title={microsoft.name} onClick={() => {if (microsoft.ref.current) microsoft.ref.current.getDirectories()}} />
+                <ModalButton number={folder.id} title={folder.name} onClick={() => {}} />
+                <ModalButton number={hourglass.id} title={hourglass.name} onClick={() => {}} />
+                <ModalButton number={calendar.id} title={calendar.name} onClick={() => {if (calendar.ref.current) calendar.ref.current.getActions()}} />
+                <ModalButton number={clipboard.id} title={clipboard.name} onClick={() => {if (clipboard.ref.current) clipboard.ref.current.gatherTaskList()}} />
+                <ModalButton number={pollo.id} title={pollo.name} onClick={() => {}} />
             </div>
-            <Modal number={firstObject.id} title={firstObject.name} Content={Apple} />
-            <Modal number={secondObject.id} title={secondObject.name} Content={Microsoft} />
-            <Modal number={thirdObject.id} title={thirdObject.name} Content={Folder} />
-            <Modal number={fourthObject.id} title={fourthObject.name} Content={Hourglass} />
-            <Modal number={fithObject.id} title={fithObject.name} Content={Calendar} />
-            <Modal number={sixthObject.id} title={sixthObject.name} Content={Clipboard} />
-            <Modal number={seventhObject.id} title={seventhObject.name} Content={Pollo} />
+            <Modal number={apple.id} title={apple.name} ref={apple.ref} Content={Apple} />
+            <Modal number={microsoft.id} title={microsoft.name} ref={microsoft.ref} Content={Microsoft} />
+            <Modal number={folder.id} title={folder.name} ref={folder.ref} Content={Folder} />
+            <Modal number={hourglass.id} title={hourglass.name} ref={hourglass.ref} Content={Hourglass} />
+            <Modal number={calendar.id} title={calendar.name} ref={calendar.ref} Content={Calendar} />
+            <Modal number={clipboard.id} title={clipboard.name} ref={clipboard.ref} Content={Clipboard} />
+            <Modal number={pollo.id} title={pollo.name} ref={pollo.ref} Content={Pollo} />
         </>
     )
 }

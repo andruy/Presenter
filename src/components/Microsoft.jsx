@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react"
 
-const Microsoft = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+const Microsoft = forwardRef(({ isDisabled }, ref) => {
     const idSuffix = "Microsoft"
     const [buttonText, setButtonText] = useState("Empty")
     const [inputValue, setInputValue] = useState("")
@@ -11,45 +11,42 @@ const Microsoft = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
     const [directories, setDirectories] = useState([])
     const buttonRef = useRef(null)
 
-    useEffect(() => {
-        const theFunction = {
-            async send(treeData) {
-                const response = await fetch('/yt', {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(treeData)
-                })
-                if (response.ok) {
-                    const result = await response.json()
-                    console.log(result.report)
-                    return result
-                } else {
-                    console.error(response)
-                    console.log(treeData)
-                    return "Something went wrong"
-                }
-            }
+    async function send() {
+        const treeData = {
+            links: linksObject
         }
-        sendOnPageLoad(theFunction)
 
-        async function getDirectories() {
-            const response = await fetch('/ytd')
-            let data = await response.json()
-
-            data.sort((a, b) => a.name.localeCompare(b.name))
-            setDirectories(data.map(item => item.name))
-        }
-        getDirectories()
-    }, [])
-
-    useEffect(() => {
-        if (responseFromParent) {
+        const response = await fetch('/yt', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(treeData)
+        })
+        if (response.ok) {
+            const result = await response.json()
+            console.log(result.report)
             setLinksObject({})
-            updateResponse(false)
+            return result
+        } else {
+            console.error(response)
+            console.log(treeData)
+            return "Something went wrong"
         }
-    }, [responseFromParent])
+    }
+
+    useImperativeHandle(ref, () => ({
+        send,
+        getDirectories,
+    }))
+
+    async function getDirectories() {
+        const response = await fetch('/ytd')
+        let data = await response.json()
+
+        data.sort((a, b) => a.name.localeCompare(b.name))
+        setDirectories(data.map(item => item.name))
+    }
 
     useEffect(() => {
         setPlusIsDisabled(inputValue.trim() === '' || selectValue === '' ? true : false)
@@ -63,14 +60,14 @@ const Microsoft = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
                 button.click()
             }
         }
-        setAccordionIsDisabled(Object.keys(linksObject).length > 0 ? false : true)
-        const theObject = {
-            data: {
-                links: linksObject
-            },
-            status: Object.keys(linksObject).length > 0 ? false : true
+
+        if (Object.keys(linksObject).length > 0) {
+            setAccordionIsDisabled(false)
+            isDisabled(false)
+        } else {
+            setAccordionIsDisabled(true)
+            isDisabled(true)
         }
-        sendDataToParent(theObject)
     }, [linksObject])
 
     const handleSelectChange = event => {
@@ -130,7 +127,7 @@ const Microsoft = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
                                                     linksObject[key].map((link, linkIndex) => (
                                                         <li key={linkIndex} className="list-group-item d-flex justify-content-between align-items-center">
                                                             {link}
-                                                            <button type="button" className="btn btn-outline-danger btn-sm" onClick={() => {
+                                                            <button type="button" className="btn btn-outline-danger btn-sm ms-2" onClick={() => {
                                                                 setLinksObject(prevLinksObject => {
                                                                     const updatedLinks = { ...prevLinksObject }
                                                                     updatedLinks[key] = updatedLinks[key].filter((_, i) => i !== linkIndex)
@@ -156,6 +153,6 @@ const Microsoft = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
             </div>
         </>
     )
-}
+})
 
 export default Microsoft

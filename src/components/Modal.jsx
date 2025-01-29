@@ -1,10 +1,9 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, forwardRef } from 'react'
 
-const Modal = ({ number, title, Content }) => {
+const Modal = forwardRef(({ number, title, Content }, ref) => {
     const [isDisabled, setIsDisabled] = useState(true)
     const [showCheckmark, setShowCheckmark] = useState(false)
     const [showX, setShowX] = useState(false)
-    const contentRef = useRef(null)
     const spanRef = useRef(null)
     const buttonRef = useRef(null)
     const showingTime = 5000
@@ -18,11 +17,11 @@ const Modal = ({ number, title, Content }) => {
     }
 
     async function submit() {
-        if (spanRef.current && contentRef.current) {
+        if (spanRef.current && ref.current) {
             setIsDisabled(true)
             spanRef.current.classList.toggle('visually-hidden')
 
-            const response = await contentRef.current.send()
+            const response = await ref.current.send()
 
             if (response.report) {
                 spanRef.current.classList.toggle('visually-hidden')
@@ -30,7 +29,6 @@ const Modal = ({ number, title, Content }) => {
 
                 setTimeout(() => {
                     toggleCheckmark()
-                    setIsDisabled(false)
                 }, showingTime)
             } else {
                 spanRef.current.classList.toggle('visually-hidden')
@@ -53,7 +51,7 @@ const Modal = ({ number, title, Content }) => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <Content isDisabled={setIsDisabled} parentButtonRef={buttonRef} ref={contentRef} />
+                        <Content isDisabled={setIsDisabled} parentButtonRef={buttonRef} ref={ref} />
                     </div>
                     <div className="modal-footer">
                         <span ref={spanRef} className="spinner-border text-primary visually-hidden" role="status"></span>
@@ -78,6 +76,6 @@ const Modal = ({ number, title, Content }) => {
             </div>
         </div>
     )
-}
+})
 
 export default Modal

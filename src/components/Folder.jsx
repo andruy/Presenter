@@ -1,50 +1,39 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react"
 
-const Folder = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+const Folder = forwardRef(({ isDisabled }, ref) => {
     const [inputValue, setInputValue] = useState("")
     const [folderName, setFolderName] = useState("{}")
     const [plusIsDisabled, setPlusIsDisabled] = useState(true)
 
-    useEffect(() => {
-        const theFunction = {
-            async send(data) {
-                const formData = new FormData()
-                formData.append('name', data)
-                const queryString = new URLSearchParams(formData).toString()
-                const response = await fetch('/newDirectory' + `?${queryString}`, {
-                    method: "POST"
-                })
-                if (response.ok) {
-                    const result = await response.json()
-                    console.log(result.report)
-                    return result
-                } else {
-                    console.error(response)
-                    console.log(data)
-                    return "Something went wrong"
-                }
-            }
-        }
-        sendOnPageLoad(theFunction)
-    }, [])
-
-    useEffect(() => {
-        if (responseFromParent) {
+    async function send() {
+        const formData = new FormData()
+        formData.append('name', folderName)
+        const queryString = new URLSearchParams(formData).toString()
+        const response = await fetch('/newDirectory' + `?${queryString}`, {
+            method: "POST"
+        })
+        if (response.ok) {
+            const result = await response.json()
+            console.log(result.report)
             setFolderName("{}")
-            updateResponse(false)
+            return result
+        } else {
+            console.error(response)
+            console.log(folderName)
+            return "Something went wrong"
         }
-    }, [responseFromParent])
+    }
+
+    useImperativeHandle(ref, () => ({
+        send,
+    }))
 
     useEffect(() => {
         setPlusIsDisabled(inputValue.trim() === '' ? true : false)
     }, [inputValue])
 
     useEffect(() => {
-        const theParam = {
-            data: folderName,
-            status: folderName === '{}' ? true : false
-        }
-        sendDataToParent(theParam)
+        folderName === '{}' ? isDisabled(true) : isDisabled(false)
     }, [folderName])
 
     const handleChange = event => {
@@ -77,13 +66,13 @@ const Folder = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateRe
                     <div style={{ overflowX: 'auto', whiteSpace: 'nowrap', flex: 1 }}>
                         <span style={{color: "#6c757d"}}>/the/new/folder/</span>{folderName}
                     </div>
-                    <button onClick={() => setFolderName("{}")} className="btn btn-outline-danger btn-sm" disabled={folderName === '{}'}>
+                    <button onClick={() => setFolderName("{}")} className="btn btn-outline-danger btn-sm ms-2" disabled={folderName === '{}'}>
                         <i className="fa-solid fa-arrow-rotate-left"></i>
                     </button>
                 </li>
             </ul>
         </>
     )
-}
+})
 
 export default Folder

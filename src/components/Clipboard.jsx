@@ -1,36 +1,38 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react"
 
-const Clipboard = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updateResponse }) => {
+const Clipboard = forwardRef(({ isDisabled }, ref) => {
     const [selectValue, setSelectValue] = useState("")
     const [tasks, setTasks] = useState([])
     const [plusIsDisabled, setPlusIsDisabled] = useState(true)
     const [taskPlaceholder, setTaskPlaceholder] = useState("")
     const [innerObject, setInnerObject] = useState({})
 
-    useEffect(() => {
-        const theFunction = {
-            async send(taskToKill) {
-                const response = await fetch('/deletetask', {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(taskToKill)
-                })
-                if (response.ok) {
-                    const result = await response.json()
-                    console.log(result.report)
-                    return result
-                } else {
-                    console.error(response)
-                    console.log(taskToKill)
-                    return "Something went wrong"
-                }
-            }
+    async function send() {
+        const response = await fetch('/deletetask', {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(innerObject)
+        })
+        if (response.ok) {
+            const result = await response.json()
+            console.log(result.report)
+            setTaskPlaceholder("")
+            setInnerObject({})
+            gatherTaskList()
+            return result
+        } else {
+            console.error(response)
+            console.log(innerObject)
+            return "Something went wrong"
         }
-        sendOnPageLoad(theFunction)
-        gatherTaskList()
-    }, [])
+    }
+
+    useImperativeHandle(ref, () => ({
+        send,
+        gatherTaskList,
+    }))
 
     async function gatherTaskList() {
         const response = await fetch("/emailtasks")
@@ -40,35 +42,19 @@ const Clipboard = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
     }
 
     useEffect(() => {
-        if (responseFromParent) {
-            gatherTaskList()
-            setTaskPlaceholder("")
-            updateResponse(false)
-        }
-    }, [responseFromParent])
-
-    useEffect(() => {
         setPlusIsDisabled(selectValue === "" ? true : false)
     }, [selectValue])
 
     useEffect(() => {
-        const theTask = {
-            data: {
-                innerObject
-            },
-            status: taskPlaceholder === "" ? true : false
-        }
-        sendDataToParent(theTask)
+        taskPlaceholder === "" ? isDisabled(true) : isDisabled(false)
     }, [taskPlaceholder])
 
     const handleAddTask = () => {
-        if (selectValue) {
-            setTaskPlaceholder(selectValue)
-            for (let i = 0; i < tasks.length; i++) {
-                if (tasks[i].id === selectValue) {
-                    setInnerObject(tasks[i])
-                    break
-                }
+        setTaskPlaceholder(selectValue)
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].id === selectValue) {
+                setInnerObject(tasks[i])
+                break
             }
         }
     }
@@ -106,13 +92,13 @@ const Clipboard = ({ sendDataToParent, sendOnPageLoad, responseFromParent, updat
                             taskPlaceholder
                         }
                     </div>
-                    <button onClick={() => setTaskPlaceholder("")} className="btn btn-outline-danger btn-sm" disabled={taskPlaceholder === ''}>
+                    <button onClick={() => setTaskPlaceholder("")} className="btn btn-outline-danger btn-sm ms-2" disabled={taskPlaceholder === ''}>
                         <i className="fa-solid fa-arrow-rotate-left"></i>
                     </button>
                 </li>
             </ul>
         </>
     )
-}
+})
 
 export default Clipboard
