@@ -9,16 +9,12 @@ const Calendar = forwardRef(({ isDisabled }, ref) => {
     const [tasksArray, setTasksArray] = useState([])
 
     async function send() {
-        const treeData = {
-            tasks: datePlaceholder === "" ? [] : tasksArray
-        }
-
         const response = await fetch('/emailtask', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(treeData)
+            body: JSON.stringify(tasksArray)
         })
         if (response.ok) {
             const result = await response.json()
@@ -28,7 +24,7 @@ const Calendar = forwardRef(({ isDisabled }, ref) => {
             return result
         } else {
             console.error(response)
-            console.log(treeData)
+            console.log(tasksArray)
             return "Something went wrong"
         }
     }

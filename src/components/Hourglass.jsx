@@ -12,16 +12,12 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
     const inputRef = useRef(null)
 
     async function send() {
-        const data = {
-            tasks: tasksArray
-        }
-
         const response = await fetch('/emailtask', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(tasksArray)
         })
         if (response.ok) {
             const result = await response.json()
@@ -30,7 +26,7 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
             return result
         } else {
             console.error(response)
-            console.log(data)
+            console.log(tasksArray)
             return "Something went wrong"
         }
     }

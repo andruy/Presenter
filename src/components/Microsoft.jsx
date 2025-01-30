@@ -12,16 +12,12 @@ const Microsoft = forwardRef(({ isDisabled }, ref) => {
     const buttonRef = useRef(null)
 
     async function send() {
-        const treeData = {
-            links: linksObject
-        }
-
         const response = await fetch('/yt', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(treeData)
+            body: JSON.stringify(linksObject)
         })
         if (response.ok) {
             const result = await response.json()
@@ -30,7 +26,7 @@ const Microsoft = forwardRef(({ isDisabled }, ref) => {
             return result
         } else {
             console.error(response)
-            console.log(treeData)
+            console.log(linksObject)
             return "Something went wrong"
         }
     }
