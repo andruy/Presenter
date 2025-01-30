@@ -9,10 +9,10 @@ const Pollo = forwardRef(({ isDisabled, parentButtonRef }, ref) => {
         const content = {
             code: inputValue,
             meal: mealSelectValue,
-            type: typeSelectValue
+            visit: typeSelectValue
         }
 
-        const response = await fetch('/deletetask', {
+        const response = await fetch('/pollo', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
