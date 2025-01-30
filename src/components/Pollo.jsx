@@ -36,8 +36,8 @@ const Pollo = forwardRef(({ isDisabled, parentButtonRef }, ref) => {
     }))
 
     useEffect(() => {
-        inputValue.length === 16 ? isDisabled(false) : isDisabled(true)
-    }, [inputValue])
+        inputValue.length === 16 && mealSelectValue && typeSelectValue ? isDisabled(false) : isDisabled(true)
+    }, [inputValue, mealSelectValue, typeSelectValue])
 
     const handleChange = event => {
         setInputValue(event.target.value)
@@ -61,6 +61,7 @@ const Pollo = forwardRef(({ isDisabled, parentButtonRef }, ref) => {
         <>
             <input value={inputValue} onKeyDown={handleKeyDown} onChange={handleChange} className="form-control form-control-lg mb-3" type="number" inputMode="numeric" pattern="\d*" placeholder="Enter code" />
             <select value={mealSelectValue} onChange={handleMealSelectChange} className="form-select form-select-lg mb-3" aria-label="Example select with button addon">
+                <option value="" disabled hidden>Choose meal...</option>
                 <option value="Chicken Platter">Chicken Platter</option>
                 <option value="TropiChop">TropiChop</option>
                 <option value="Whole Chicken Family Meal">Whole Chicken Family Meal</option>
@@ -70,6 +71,7 @@ const Pollo = forwardRef(({ isDisabled, parentButtonRef }, ref) => {
                 <option value="Master Trio Platter">Master Trio Platter</option>
             </select>
             <select value={typeSelectValue} onChange={handleTypeSelectChange} className="form-select form-select-lg" aria-label="Example select with button addon">
+                <option value="" disabled hidden>Choose visit...</option>
                 <option value="Dine-In">Dine-In</option>
                 <option value="To-go">To-go</option>
             </select>
