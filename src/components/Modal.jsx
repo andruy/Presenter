@@ -6,7 +6,7 @@ const Modal = forwardRef(({ number, title, Content }, ref) => {
     const [showX, setShowX] = useState(false)
     const spanRef = useRef(null)
     const buttonRef = useRef(null)
-    const showingTime = 5000
+    const showingTime = 3000
 
     const toggleCheckmark = () => {
         setShowCheckmark(prev => !prev)

@@ -12,16 +12,12 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
     const inputRef = useRef(null)
 
     async function send() {
-        const data = {
-            tasks: tasksArray
-        }
-
         const response = await fetch('/emailtask', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(tasksArray)
         })
         if (response.ok) {
             const result = await response.json()
@@ -30,7 +26,7 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
             return result
         } else {
             console.error(response)
-            console.log(data)
+            console.log(tasksArray)
             return "Something went wrong"
         }
     }
@@ -70,9 +66,8 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
     }
 
     useEffect(() => {
-        const input = inputRef.current
-        if (input) {
-            if (input.checked) {
+        if (inputRef.current) {
+            if (inputRef.current.checked) {
                 setRadioValue("Turn AC off")
             } else {
                 setRadioValue("Turn AC on")
@@ -97,9 +92,8 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
     useEffect(() => {
         setButtonText(tasksArray.length > 0 ? `Total tasks: ${tasksArray.length}` : 'Empty')
         if (tasksArray.length === 0) {
-            const button = buttonRef.current
-            if (button && !button.classList.contains('collapsed')) {
-                button.click()
+            if (buttonRef.current && !buttonRef.current.classList.contains('collapsed')) {
+                buttonRef.current.click()
             }
         }
         setAccordionIsDisabled(tasksArray.length > 0 ? false : true)

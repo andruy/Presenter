@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, useImperativeHandle } from "react"
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react"
 
 const Clipboard = forwardRef(({ isDisabled }, ref) => {
     const [selectValue, setSelectValue] = useState("")
@@ -6,6 +6,7 @@ const Clipboard = forwardRef(({ isDisabled }, ref) => {
     const [plusIsDisabled, setPlusIsDisabled] = useState(true)
     const [taskPlaceholder, setTaskPlaceholder] = useState("")
     const [innerObject, setInnerObject] = useState({})
+    const optionRef = useRef(null)
 
     async function send() {
         const response = await fetch('/deletetask', {
@@ -21,6 +22,9 @@ const Clipboard = forwardRef(({ isDisabled }, ref) => {
             setTaskPlaceholder("")
             setInnerObject({})
             gatherTaskList()
+            if (optionRef.current) {
+                optionRef.current.selected = true
+            }
             return result
         } else {
             console.error(response)
@@ -67,7 +71,7 @@ const Clipboard = forwardRef(({ isDisabled }, ref) => {
         <>
             <div className="input-group mb-3">
                 <select value={selectValue} onChange={handleSelectChange} className="form-select form-select-lg" aria-label="Example select with button addon">
-                    <option value="" disabled hidden>Current tasks...</option>
+                    <option ref={optionRef} value="" disabled hidden>Current tasks...</option>
                     {tasks.map((task, index) => (
                         <option key={index} value={task.id}>{task.name + " " + task.time}</option>
                     ))}

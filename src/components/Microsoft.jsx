@@ -12,16 +12,12 @@ const Microsoft = forwardRef(({ isDisabled }, ref) => {
     const buttonRef = useRef(null)
 
     async function send() {
-        const treeData = {
-            links: linksObject
-        }
-
         const response = await fetch('/yt', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(treeData)
+            body: JSON.stringify(linksObject)
         })
         if (response.ok) {
             const result = await response.json()
@@ -30,7 +26,7 @@ const Microsoft = forwardRef(({ isDisabled }, ref) => {
             return result
         } else {
             console.error(response)
-            console.log(treeData)
+            console.log(linksObject)
             return "Something went wrong"
         }
     }
@@ -55,9 +51,8 @@ const Microsoft = forwardRef(({ isDisabled }, ref) => {
     useEffect(() => {
         setButtonText(Object.keys(linksObject).length > 0 ? `Total links: ${Object.keys(linksObject).length}, ${Object.values(linksObject).reduce((acc, arr) => acc + arr.length, 0)}` : 'Empty')
         if (Object.keys(linksObject).length === 0) {
-            const button = buttonRef.current
-            if (button && !button.classList.contains('collapsed')) {
-                button.click()
+            if (buttonRef.current && !buttonRef.current.classList.contains('collapsed')) {
+                buttonRef.current.click()
             }
         }
 
