@@ -93,7 +93,7 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
         setButtonText(tasksArray.length > 0 ? `Total tasks: ${tasksArray.length}` : 'Empty')
         if (tasksArray.length === 0) {
             if (buttonRef.current && !buttonRef.current.classList.contains('collapsed')) {
-                button.click()
+                buttonRef.current.click()
             }
         }
         setAccordionIsDisabled(tasksArray.length > 0 ? false : true)

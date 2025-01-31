@@ -52,7 +52,7 @@ const Microsoft = forwardRef(({ isDisabled }, ref) => {
         setButtonText(Object.keys(linksObject).length > 0 ? `Total links: ${Object.keys(linksObject).length}, ${Object.values(linksObject).reduce((acc, arr) => acc + arr.length, 0)}` : 'Empty')
         if (Object.keys(linksObject).length === 0) {
             if (buttonRef.current && !buttonRef.current.classList.contains('collapsed')) {
-                button.click()
+                buttonRef.current.click()
             }
         }
 
