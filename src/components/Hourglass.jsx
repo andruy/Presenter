@@ -66,9 +66,8 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
     }
 
     useEffect(() => {
-        const input = inputRef.current
-        if (input) {
-            if (input.checked) {
+        if (inputRef.current) {
+            if (inputRef.current.checked) {
                 setRadioValue("Turn AC off")
             } else {
                 setRadioValue("Turn AC on")
@@ -93,8 +92,7 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
     useEffect(() => {
         setButtonText(tasksArray.length > 0 ? `Total tasks: ${tasksArray.length}` : 'Empty')
         if (tasksArray.length === 0) {
-            const button = buttonRef.current
-            if (button && !button.classList.contains('collapsed')) {
+            if (buttonRef.current && !buttonRef.current.classList.contains('collapsed')) {
                 button.click()
             }
         }

@@ -51,8 +51,7 @@ const Microsoft = forwardRef(({ isDisabled }, ref) => {
     useEffect(() => {
         setButtonText(Object.keys(linksObject).length > 0 ? `Total links: ${Object.keys(linksObject).length}, ${Object.values(linksObject).reduce((acc, arr) => acc + arr.length, 0)}` : 'Empty')
         if (Object.keys(linksObject).length === 0) {
-            const button = buttonRef.current
-            if (button && !button.classList.contains('collapsed')) {
+            if (buttonRef.current && !buttonRef.current.classList.contains('collapsed')) {
                 button.click()
             }
         }

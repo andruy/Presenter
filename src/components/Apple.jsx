@@ -44,8 +44,7 @@ const Apple = forwardRef(({ isDisabled }, ref) => {
     useEffect(() => {
         setButtonText(linksArray.length > 0 ? `Total links: ${linksArray.length}` : 'Empty')
         if (linksArray.length === 0) {
-            const button = buttonRef.current
-            if (button && !button.classList.contains('collapsed')) {
+            if (buttonRef.current && !buttonRef.current.classList.contains('collapsed')) {
                 button.click()
             }
         }
