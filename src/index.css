@@ -1,20 +1,16 @@
 body {
-    background: rgb(5, 1, 23);
-    background: linear-gradient(135deg, rgba(34, 25, 91, 1) 0%, rgba(5, 1, 23, 1) 10%, rgba(5, 1, 23, 1) 90%, rgba(34, 25, 91, 1) 100%);
+    background: #050117;
+    background: linear-gradient(135deg, #22195b 0%, #050117 10%, #050117 90%, #22195b 100%);
     margin: 0;
     padding: 0;
-    display: flex;
-    place-items: center;
-    min-width: 320px;
-    min-height: 100vh;
-    min-height: 100dvh;
-}
-
-.background-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100dvh;
 }

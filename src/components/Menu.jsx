@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import Blob from "./Blob"
 import ModalButton from './ModalButton'
 import Modal from './Modal'
 import Apple from './Apple'
@@ -56,6 +57,7 @@ function Menu() {
 
     return (
         <>
+            <Blob />
             <div className="btn-group-vertical">
                 <ModalButton number={apple.id} title={apple.name} onClick={() => { }} />
                 <ModalButton number={microsoft.id} title={microsoft.name} onClick={() => { if (microsoft.ref.current) microsoft.ref.current.getDirectories() }} />
@@ -65,6 +67,7 @@ function Menu() {
                 <ModalButton number={clipboard.id} title={clipboard.name} onClick={() => { if (clipboard.ref.current) clipboard.ref.current.gatherTaskList() }} />
                 <ModalButton number={pollo.id} title={pollo.name} onClick={() => { }} />
             </div>
+
             <Modal number={apple.id} title={apple.name} Content={Apple} ref={apple.ref} />
             <Modal number={microsoft.id} title={microsoft.name} Content={Microsoft} ref={microsoft.ref} />
             <Modal number={folder.id} title={folder.name} Content={Folder} ref={folder.ref} />
