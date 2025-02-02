@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react"
 
-const Clipboard = forwardRef(({ isDisabled }, ref) => {
+const Notepad = forwardRef(({ isDisabled }, ref) => {
     const [selectValue, setSelectValue] = useState("")
     const [tasks, setTasks] = useState([])
     const [plusIsDisabled, setPlusIsDisabled] = useState(true)
@@ -105,4 +105,4 @@ const Clipboard = forwardRef(({ isDisabled }, ref) => {
     )
 })
 
-export default Clipboard
+export default Notepad
