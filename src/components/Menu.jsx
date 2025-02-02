@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import Blob from "./Blob"
 import ModalButton from './ModalButton'
 import Modal from './Modal'
 import Apple from './Apple'
@@ -57,7 +56,6 @@ function Menu() {
 
     return (
         <>
-            <Blob />
             <div className="btn-group-vertical">
                 <ModalButton number={apple.id} title={apple.name} onClick={() => { }} />
                 <ModalButton number={microsoft.id} title={microsoft.name} onClick={() => { if (microsoft.ref.current) microsoft.ref.current.getDirectories() }} />
