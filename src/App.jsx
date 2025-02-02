@@ -1,7 +1,6 @@
 import { useRef } from 'react'
 import './App.css'
 import MenuButton from './components/MenuButton'
-import ModalButton from './components/ModalButton'
 import Modal from './components/Modal'
 import Apple from './components/Apple'
 import Microsoft from './components/Microsoft'
@@ -62,7 +61,9 @@ function App() {
             <MenuButton />
             <div className="btn-group-vertical">
                 {modals.map((modal, index) => (
-                    <ModalButton key={index} number={index} title={modal.icon} onClick={() => modal.action(modal.ref)} />
+                    <button key={index} onClick={() => modal.action(modal.ref)} type="button" className="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target={"#staticBackdrop" + index}>
+                        {modal.icon}
+                    </button>
                 ))}
             </div>
 
