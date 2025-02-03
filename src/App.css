@@ -1,8 +1,39 @@
 #root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.react-logo {
+    height: 6em;
+    padding: 1.5em;
+    transform-origin: center center;
+}
+
+.animate-intro {
+    opacity: 0;
+    animation: slideInRight 1s ease-out forwards;
+}
+
+@keyframes slideInRight {
+    0% {
+      transform: translateX(100%); /* Start off-screen to the right */
+      opacity: 0;                 /* Optional fade-in */
+    }
+    100% {
+      transform: translateX(0);   /* End at original position */
+      opacity: 1;                 /* Full visibility */
+    }
 }
 
 /* SVG Styling */

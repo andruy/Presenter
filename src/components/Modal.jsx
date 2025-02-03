@@ -1,6 +1,6 @@
 import { useState, useRef, forwardRef } from 'react'
 
-const Modal = forwardRef(({ number, title, Content }, ref) => {
+const Modal = forwardRef(({ number, title, Content, openMenu }, ref) => {
     const [isDisabled, setIsDisabled] = useState(true)
     const [showCheckmark, setShowCheckmark] = useState(false)
     const [showX, setShowX] = useState(false)
@@ -52,7 +52,7 @@ const Modal = forwardRef(({ number, title, Content }, ref) => {
                 }}>
                     <div className="modal-header">
                         <h3 className="modal-title" id={"staticBackdropLabel" + number}>{title}</h3>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button onClick={() => { openMenu() }} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
                         <Content isDisabled={setIsDisabled} parentButtonRef={buttonRef} ref={ref} />

@@ -11,64 +11,78 @@ import Notepad from './components/Notepad'
 import Pollo from './components/Pollo'
 
 function App() {
+    const logoRef = useRef(null)
+    function openMenu() {
+        if (logoRef.current) logoRef.current.click()
+    }
+
     const modals = [
         {
             icon: <i className="fa-brands fa-apple"></i>,
             ref: useRef(null),
             component: Apple,
-            action: () => { }
+            onClick: () => { openMenu() }
         },
         {
             icon: <i className="fa-brands fa-microsoft"></i>,
             ref: useRef(null),
             component: Microsoft,
-            action: ref => { if (ref.current) ref.current.getDirectories() }
+            onClick: ref => { openMenu(); if (ref.current) ref.current.getDirectories() }
         },
         {
             icon: <i className="fa-solid fa-folder-closed"></i>,
             ref: useRef(null),
             component: Folder,
-            action: () => { }
+            onClick: () => { openMenu() }
         },
         {
             icon: <i className="fa-regular fa-hourglass-half"></i>,
             ref: useRef(null),
             component: Hourglass,
-            action: () => { }
+            onClick: () => { openMenu() }
         },
         {
             icon: <i className="fa-regular fa-calendar-days"></i>,
             ref: useRef(null),
             component: Calendar,
-            action: ref => { if (ref.current) ref.current.getActions() }
+            onClick: ref => { openMenu(); if (ref.current) ref.current.getActions() }
         },
         {
             icon: <i className="fa-regular fa-clipboard"></i>,
             ref: useRef(null),
             component: Notepad,
-            action: ref => { if (ref.current) ref.current.gatherTaskList() }
+            onClick: ref => { openMenu(); if (ref.current) ref.current.gatherTaskList() }
         },
         {
             icon: <i className="fa-solid fa-drumstick-bite"></i>,
             ref: useRef(null),
             component: Pollo,
-            action: () => { }
+            onClick: () => { openMenu() }
         }
     ]
 
     return (
         <>
-            <MenuButton />
-            <div className="btn-group-vertical">
-                {modals.map((modal, index) => (
-                    <button key={index} onClick={() => modal.action(modal.ref)} type="button" className="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target={"#staticBackdrop" + index}>
-                        {modal.icon}
-                    </button>
-                ))}
+            <div className="position-relative">
+                <div className="position-absolute top-0 end-0">
+                    <MenuButton ref={logoRef} />
+                </div>
+            </div>
+
+            <div className="centered">
+                <div className="collapse collapse-horizontal" id="collapseExample">
+                    <div className="btn-group-vertical">
+                        {modals.map((modal, index) => (
+                            <button key={index} onClick={() => modal.onClick(modal.ref)} type="button" className="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target={"#staticBackdrop" + index}>
+                                {modal.icon}
+                            </button>
+                        ))}
+                    </div>
+                </div>
             </div>
 
             {modals.map((modal, index) => (
-                <Modal key={index} number={index} title={modal.icon} Content={modal.component} ref={modal.ref} />
+                <Modal key={index} number={index} title={modal.icon} Content={modal.component} openMenu={openMenu} ref={modal.ref} />
             ))}
         </>
     )
