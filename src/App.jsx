@@ -2,16 +2,17 @@ import { useRef } from 'react'
 import './App.css'
 import MenuButton from './components/MenuButton'
 import Modal from './components/Modal'
-import Apple from './components/Apple'
-import Microsoft from './components/Microsoft'
-import Folder from './components/Folder'
-import Hourglass from './components/Hourglass'
-import Calendar from './components/Calendar'
-import Notepad from './components/Notepad'
-import Pollo from './components/Pollo'
+import Apple from './components/modals/Apple'
+import Microsoft from './components/modals/Microsoft'
+import Folder from './components/modals/Folder'
+import Hourglass from './components/modals/Hourglass'
+import Calendar from './components/modals/Calendar'
+import Notepad from './components/modals/Notepad'
+import Pollo from './components/modals/Pollo'
 
 function App() {
     const logoRef = useRef(null)
+
     function openMenu() {
         if (logoRef.current) logoRef.current.click()
     }
