@@ -7,17 +7,22 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
     const [tasksArray, setTasksArray] = useState([])
     const [plusIsDisabled, setPlusIsDisabled] = useState(true)
     const [accordionIsDisabled, setAccordionIsDisabled] = useState(true)
-    const [radioValue, setRadioValue] = useState("")
     const buttonRef = useRef(null)
     const inputRef = useRef(null)
 
     async function send() {
+        const currentTime = Date.now()
+        const taskList = [...tasksArray]
+        taskList.forEach(task => {
+            task.timeframe += currentTime
+        })
+
         const response = await fetch('/emailtask', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(tasksArray)
+            body: JSON.stringify(taskList)
         })
         if (response.ok) {
             const result = await response.json()
@@ -26,7 +31,7 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
             return result
         } else {
             console.error(response)
-            console.log(tasksArray)
+            console.log(taskList)
             return "Something went wrong"
         }
     }
@@ -35,7 +40,7 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
         send,
     }))
 
-    const handleChange = event => {
+    const handleInputChange = event => {
         setInputValue(event.target.value)
     }
 
@@ -45,7 +50,7 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
                 timeframe: minutesToMilliseconds(Number(inputValue)),
                 email: {
                     to: "andruycira@icloud.com",
-                    subject: radioValue,
+                    subject: inputRef.current && inputRef.current.checked ? "Turn AC off" : "Turn AC on",
                     body: "Lorem ipsum"
                 }
             }
@@ -64,16 +69,6 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
 
         return newTask
     }
-
-    useEffect(() => {
-        if (inputRef.current) {
-            if (inputRef.current.checked) {
-                setRadioValue("Turn AC off")
-            } else {
-                setRadioValue("Turn AC on")
-            }
-        }
-    }, [handleAddTask])
 
     const handleKeyDown = event => {
         if (event.key === 'Enter') {
@@ -114,7 +109,7 @@ const Hourglass = forwardRef(({ isDisabled }, ref) => {
                 </label>
             </div>
             <div className="input-group mb-3">
-                <input value={inputValue} onKeyDown={handleKeyDown} onChange={handleChange} className="form-control form-control-lg" type="number" inputMode="numeric" pattern="\d*" min={1} placeholder="How long? (minutes)" />
+                <input value={inputValue} onKeyDown={handleKeyDown} onChange={handleInputChange} className="form-control form-control-lg" type="number" inputMode="numeric" pattern="\d*" min={1} placeholder="How long? (minutes)" />
                 <button onClick={handleAddTask} type="button" className="btn btn-outline-secondary" disabled={plusIsDisabled}>
                     <i className="fa-solid fa-plus"></i>
                 </button>
