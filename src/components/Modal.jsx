@@ -1,6 +1,6 @@
 import { useState, useRef, forwardRef } from 'react'
 
-const Modal = forwardRef(({ number, title, Content, openMenu }, ref) => {
+const Modal = forwardRef(({ number, title, extraLargeModal, Content, openMenu }, ref) => {
     const [isDisabled, setIsDisabled] = useState(true)
     const [showCheckmark, setShowCheckmark] = useState(false)
     const [showX, setShowX] = useState(false)
@@ -44,12 +44,14 @@ const Modal = forwardRef(({ number, title, Content, openMenu }, ref) => {
 
     return (
         <div className="modal fade" id={"staticBackdrop" + number} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby={"staticBackdropLabel" + number} aria-modal>
-            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div className="modal-content" style={{
-                    background: 'rgba(53, 54, 72, 0.2)',
-                    backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.5)'
-                }}>
+            <div className={`modal-dialog modal-dialog-centered modal-dialog-scrollable ${extraLargeModal && "modal-xl"}`}>
+                <div className="modal-content"
+                    style={{
+                        background: 'rgba(53, 54, 72, 0.2)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(255, 255, 255, 0.5)'
+                    }}
+                >
                     <div className="modal-header">
                         <h3 className="modal-title" id={"staticBackdropLabel" + number}>{title}</h3>
                         <button onClick={() => { openMenu() }} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

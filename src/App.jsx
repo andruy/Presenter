@@ -9,55 +9,70 @@ import Hourglass from './components/modals/Hourglass'
 import Calendar from './components/modals/Calendar'
 import Notepad from './components/modals/Notepad'
 import Pollo from './components/modals/Pollo'
+import Linux from './components/modals/Linux'
 
 function App() {
     const logoRef = useRef(null)
 
     function openMenu() {
-        if (logoRef.current) logoRef.current.click()
+        logoRef.current && logoRef.current.click()
     }
 
     const modals = [
         {
             icon: <i className="fa-brands fa-apple"></i>,
+            extraLargeModal: false,
             ref: useRef(null),
             component: Apple,
             onClick: () => { openMenu() }
         },
         {
             icon: <i className="fa-brands fa-microsoft"></i>,
+            extraLargeModal: false,
             ref: useRef(null),
             component: Microsoft,
-            onClick: ref => { openMenu(); if (ref.current) ref.current.getDirectories() }
+            onClick: ref => { openMenu(); ref.current && ref.current.getDirectories() }
         },
         {
             icon: <i className="fa-solid fa-folder-closed"></i>,
+            extraLargeModal: false,
             ref: useRef(null),
             component: Folder,
             onClick: () => { openMenu() }
         },
         {
             icon: <i className="fa-regular fa-hourglass-half"></i>,
+            extraLargeModal: false,
             ref: useRef(null),
             component: Hourglass,
             onClick: () => { openMenu() }
         },
         {
             icon: <i className="fa-regular fa-calendar-days"></i>,
+            extraLargeModal: false,
             ref: useRef(null),
             component: Calendar,
-            onClick: ref => { openMenu(); if (ref.current) ref.current.getActions() }
+            onClick: ref => { openMenu(); ref.current && ref.current.getActions() }
         },
         {
             icon: <i className="fa-regular fa-clipboard"></i>,
+            extraLargeModal: false,
             ref: useRef(null),
             component: Notepad,
-            onClick: ref => { openMenu(); if (ref.current) ref.current.gatherTaskList() }
+            onClick: ref => { openMenu(); ref.current && ref.current.gatherTaskList() }
         },
         {
             icon: <i className="fa-solid fa-drumstick-bite"></i>,
+            extraLargeModal: false,
             ref: useRef(null),
             component: Pollo,
+            onClick: () => { openMenu() }
+        },
+        {
+            icon: <i className="fa-brands fa-linux"></i>,
+            extraLargeModal: true,
+            ref: useRef(null),
+            component: Linux,
             onClick: () => { openMenu() }
         }
     ]
@@ -83,7 +98,7 @@ function App() {
             </div>
 
             {modals.map((modal, index) => (
-                <Modal key={index} number={index} title={modal.icon} Content={modal.component} openMenu={openMenu} ref={modal.ref} />
+                <Modal key={index} number={index} title={modal.icon} extraLargeModal={modal.extraLargeModal} Content={modal.component} openMenu={openMenu} ref={modal.ref} />
             ))}
         </>
     )
