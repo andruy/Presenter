@@ -21,56 +21,56 @@ function App() {
     const modals = [
         {
             icon: <i className="fa-brands fa-apple"></i>,
-            extraLargeModal: false,
+            fullscreen: false,
             ref: useRef(null),
             component: Apple,
             onClick: () => { openMenu() }
         },
         {
             icon: <i className="fa-brands fa-microsoft"></i>,
-            extraLargeModal: false,
+            fullscreen: false,
             ref: useRef(null),
             component: Microsoft,
             onClick: ref => { openMenu(); ref.current && ref.current.getDirectories() }
         },
         {
             icon: <i className="fa-solid fa-folder-closed"></i>,
-            extraLargeModal: false,
+            fullscreen: false,
             ref: useRef(null),
             component: Folder,
             onClick: () => { openMenu() }
         },
         {
             icon: <i className="fa-regular fa-hourglass-half"></i>,
-            extraLargeModal: false,
+            fullscreen: false,
             ref: useRef(null),
             component: Hourglass,
             onClick: () => { openMenu() }
         },
         {
             icon: <i className="fa-regular fa-calendar-days"></i>,
-            extraLargeModal: false,
+            fullscreen: false,
             ref: useRef(null),
             component: Calendar,
             onClick: ref => { openMenu(); ref.current && ref.current.getActions() }
         },
         {
             icon: <i className="fa-regular fa-clipboard"></i>,
-            extraLargeModal: false,
+            fullscreen: false,
             ref: useRef(null),
             component: Notepad,
             onClick: ref => { openMenu(); ref.current && ref.current.gatherTaskList() }
         },
         {
             icon: <i className="fa-solid fa-drumstick-bite"></i>,
-            extraLargeModal: false,
+            fullscreen: false,
             ref: useRef(null),
             component: Pollo,
             onClick: () => { openMenu() }
         },
         {
             icon: <i className="fa-brands fa-linux"></i>,
-            extraLargeModal: true,
+            fullscreen: true,
             ref: useRef(null),
             component: Linux,
             onClick: () => { openMenu() }
@@ -98,7 +98,7 @@ function App() {
             </div>
 
             {modals.map((modal, index) => (
-                <Modal key={index} number={index} title={modal.icon} extraLargeModal={modal.extraLargeModal} Content={modal.component} openMenu={openMenu} ref={modal.ref} />
+                <Modal key={index} number={index} title={modal.icon} fullscreen={modal.fullscreen} Content={modal.component} openMenu={openMenu} ref={modal.ref} />
             ))}
         </>
     )
