@@ -1,6 +1,6 @@
 import { useState, useRef, forwardRef } from 'react'
 
-const Modal = forwardRef(({ number, title, fullscreen, Content, openMenu }, ref) => {
+const Modal = forwardRef(({ number, name, title, Content, openMenu }, ref) => {
     const [isDisabled, setIsDisabled] = useState(true)
     const [showCheckmark, setShowCheckmark] = useState(false)
     const [showX, setShowX] = useState(false)
@@ -46,8 +46,8 @@ const Modal = forwardRef(({ number, title, fullscreen, Content, openMenu }, ref)
         <div className="modal fade" id={"staticBackdrop" + number} data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby={"staticBackdropLabel" + number} aria-modal>
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable"
                 style={{
-                    maxWidth: fullscreen && '100%',
-                    margin: fullscreen && 'var(--bs-modal-margin)'
+                    maxWidth: name === 'linux' && '100%',
+                    margin: name === 'linux' && 'var(--bs-modal-margin)'
                 }}
             >
                 <div className="modal-content"

@@ -9,6 +9,7 @@ import Hourglass from './components/modals/Hourglass'
 import Calendar from './components/modals/Calendar'
 import Notepad from './components/modals/Notepad'
 import Pollo from './components/modals/Pollo'
+import Instagram from './components/modals/Instagram'
 import Linux from './components/modals/Linux'
 
 function App() {
@@ -20,60 +21,67 @@ function App() {
 
     const modals = [
         {
+            name: 'apple',
             icon: <i className="fa-brands fa-apple"></i>,
-            fullscreen: false,
             ref: useRef(null),
             component: Apple,
             onClick: () => { openMenu() }
         },
         {
+            name: 'microsoft',
             icon: <i className="fa-brands fa-microsoft"></i>,
-            fullscreen: false,
             ref: useRef(null),
             component: Microsoft,
             onClick: ref => { openMenu(); ref.current && ref.current.getDirectories() }
         },
         {
+            name: 'folder',
             icon: <i className="fa-solid fa-folder-closed"></i>,
-            fullscreen: false,
             ref: useRef(null),
             component: Folder,
             onClick: () => { openMenu() }
         },
         {
+            name: 'hourglass',
             icon: <i className="fa-regular fa-hourglass-half"></i>,
-            fullscreen: false,
             ref: useRef(null),
             component: Hourglass,
             onClick: () => { openMenu() }
         },
         {
+            name: 'calendar',
             icon: <i className="fa-regular fa-calendar-days"></i>,
-            fullscreen: false,
             ref: useRef(null),
             component: Calendar,
             onClick: ref => { openMenu(); ref.current && ref.current.getActions() }
         },
         {
+            name: 'notepad',
             icon: <i className="fa-regular fa-clipboard"></i>,
-            fullscreen: false,
             ref: useRef(null),
             component: Notepad,
             onClick: ref => { openMenu(); ref.current && ref.current.gatherTaskList() }
         },
         {
+            name: 'pollo',
             icon: <i className="fa-solid fa-drumstick-bite"></i>,
-            fullscreen: false,
             ref: useRef(null),
             component: Pollo,
             onClick: () => { openMenu() }
         },
         {
+            name: 'instagram',
+            icon: <i className="fa-brands fa-instagram"></i>,
+            ref: useRef(),
+            component: Instagram,
+            onClick: ref => { openMenu(); ref.current && ref.current.getListOfDates() }
+        },
+        {
+            name: 'linux',
             icon: <i className="fa-brands fa-linux"></i>,
-            fullscreen: true,
             ref: useRef(null),
             component: Linux,
-            onClick: () => { openMenu() }
+            onClick: ref => { openMenu(); ref.current && ref.current.send() }
         }
     ]
 
@@ -98,7 +106,7 @@ function App() {
             </div>
 
             {modals.map((modal, index) => (
-                <Modal key={index} number={index} title={modal.icon} fullscreen={modal.fullscreen} Content={modal.component} openMenu={openMenu} ref={modal.ref} />
+                <Modal key={index} number={index} name={modal.name} title={modal.icon} Content={modal.component} openMenu={openMenu} ref={modal.ref} />
             ))}
         </>
     )

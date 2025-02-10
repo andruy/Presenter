@@ -22,7 +22,6 @@ const Linux = forwardRef(({ isDisabled }, ref) => {
 
     useEffect(() => {
         isDisabled(false)
-        send()
     }, [])
 
     const styles = {
